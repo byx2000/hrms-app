@@ -1,32 +1,61 @@
+<!--
+主页面
+-->
+
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+  <div class="holder">
+    <div class="title-bar-holder">
+      <title-bar class="title-bar"/>
     </div>
-    <router-view/>
+    <nav-bar class="nav-bar"/>
+    <div class="page-content-holder">
+      <router-view class="page-content"/>
+    </div>
+    
   </div>
 </template>
 
+<script>
+import NavBar from './components/NavBar'
+import TitleBar from './components/TitleBar'
+
+export default {
+  components: { NavBar, TitleBar }
+}
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+* {
+  box-sizing: border-box;
 }
 
-#nav {
-  padding: 30px;
+body {
+  margin-top: 0;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+.title-bar-holder{
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2000;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+.nav-bar {
+  width: 180px;
+  height: 100vh;
+  position: fixed;
+  top: 69px;
+  left: 0;
+}
+
+.nav-bar .el-menu-item {
+  padding-left: 40px !important;
+}
+
+.page-content-holder {
+  margin-left: 220px;
+  margin-top: 100px;
+  margin-right: 40px;
 }
 </style>

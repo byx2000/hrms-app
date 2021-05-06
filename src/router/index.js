@@ -1,22 +1,38 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+
+const EmployeePage = () => import('../views/EmployeePage/EmployeePage.vue')
+const DepartmentPage = () => import('../views/DepartmentPage/DepartmentPage.vue')
+const PositionPage = () => import('../views/PositionPage/PositionPage.vue')
+const SalaryPage = () => import('../views/SalaryPage/SalaryPage.vue')
+const AttendancePage = () => import('../views/AttendancePage/AttendancePage.vue')
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    redirect: '/employee'
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/employee',
+    component: EmployeePage
+  },
+  {
+    path: '/department',
+    component: DepartmentPage
+  },
+  {
+    path: '/position',
+    component: PositionPage
+  },
+  {
+    path: '/salary',
+    component: SalaryPage
+  },
+  {
+    path: '/attendance',
+    component: AttendancePage
   }
 ]
 
@@ -25,5 +41,16 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+// 解决重复点击路由的报错问题
+const originalReplace = VueRouter.prototype.replace
+VueRouter.prototype.replace = function replace(location) {
+  return originalReplace.call(this, location).catch(err => err)
+}
+
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 
 export default router
