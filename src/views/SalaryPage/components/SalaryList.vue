@@ -10,11 +10,11 @@
     </el-table-column>
     <el-table-column prop="time" label="时间" width="180"/>
     <el-table-column label="操作">
-        <template>
-          <el-button type="primary" size="mini">详情</el-button>
-          <el-button size="mini" type="warning">调整薪资</el-button>
-        </template>
-      </el-table-column>
+      <template slot-scope="scope">
+        <el-button type="primary" size="mini" @click="onDetailClick(scope.row.empNo)">详情</el-button>
+        <el-button size="mini" type="warning">调整薪资</el-button>
+      </template>
+    </el-table-column>
   </el-table>
 </template>
 
@@ -26,6 +26,11 @@ export default {
       default() {
         return []
       }
+    }
+  },
+  methods: {
+    onDetailClick(empNo) {
+      this.$emit('onDetailClick', empNo)
     }
   }
 }

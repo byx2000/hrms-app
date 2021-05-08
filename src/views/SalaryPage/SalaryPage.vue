@@ -14,7 +14,9 @@
         @onCurrentPageChange="onCurrentPageChange" 
         @onPageSizeChange="onPageSizeChange"/>
     </el-row>
-    <salary-list :salaries="pageInfo.list"/>
+    <salary-list 
+      :salaries="pageInfo.list"
+      @onDetailClick="onDetailClick"/>
     <el-row type="flex" justify="center">
       <page-switch 
         class="page-switch-bottom" 
@@ -22,18 +24,24 @@
         @onCurrentPageChange="onCurrentPageChange" 
         @onPageSizeChange="onPageSizeChange"/>
     </el-row>
+    <salary-detail-dialog 
+      :isOpen="isSalaryDetailDialogOpen" 
+      :empNo="currentEmpNo" 
+      :salaries="currentEmployeeSalaryList"
+      @onClose="isSalaryDetailDialogOpen = false"/>
   </div>
 </template>
 
 <script>
-import { getSalaryList } from '../../network/Salary.js'
+import { getSalaryList, getEmployeeSalaryList } from '../../network/Salary.js'
 import SalaryQueryOption from './components/SalaryQueryOption'
 import PageInfo from '../../components/PageInfo'
 import PageSwitch from '../../components/PageSwitch'
 import SalaryList from './components/SalaryList'
+import SalaryDetailDialog from './components/SalaryDetailDialog'
 
 export default {
-  components: { SalaryQueryOption, PageInfo, PageSwitch, SalaryList },
+  components: { SalaryQueryOption, PageInfo, PageSwitch, SalaryList, SalaryDetailDialog },
   data() {
     let now = new Date()
     let year = now.getFullYear().toString()
@@ -48,7 +56,10 @@ export default {
         pageSize: 20,
         currentPage: 1
       },
-      pageInfo: {}
+      pageInfo: {},
+      isSalaryDetailDialogOpen: false,
+      currentEmpNo: '',
+      currentEmployeeSalaryList: []
     }
   },
   created() {
@@ -74,6 +85,13 @@ export default {
       this.query.pageSize = pageSize
       this.query.currentPage = 1
       this.refreshSalaryData(this.query)
+    },
+    onDetailClick(empNo) {
+      getEmployeeSalaryList(empNo).then(res => {
+        this.currentEmployeeSalaryList = res.data
+        this.currentEmpNo = empNo
+        this.isSalaryDetailDialogOpen = true
+      })
     }
   }
 }

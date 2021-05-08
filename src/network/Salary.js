@@ -12,3 +12,12 @@ export function getSalaryList(query) {
     data: query
   })
 }
+
+// 获取员工薪资列表
+export function getEmployeeSalaryList(empNo) {
+  return request({
+    url: '/salary/query',
+    method: 'post',
+    data: { empNo }
+  })
+}

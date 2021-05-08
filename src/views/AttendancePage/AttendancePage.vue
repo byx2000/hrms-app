@@ -11,9 +11,7 @@ import * as echarts from 'echarts';
 
 export default {
   mounted() {
-    // 基于准备好的dom，初始化echarts实例
     let chart = echarts.init(document.getElementById('main'));
-    // 绘制图表
     chart.setOption({
       title: {
         text: '工资分布'
