@@ -11,7 +11,7 @@
     <el-table-column prop="time" label="时间" width="180"/>
     <el-table-column label="操作">
       <template slot-scope="scope">
-        <el-button type="primary" size="mini" @click="onDetailClick(scope.row.empNo)">详情</el-button>
+        <el-button type="primary" size="mini" @click="onDetailClick(scope.row)">详情</el-button>
         <el-button size="mini" type="warning">调整薪资</el-button>
       </template>
     </el-table-column>
@@ -29,8 +29,8 @@ export default {
     }
   },
   methods: {
-    onDetailClick(empNo) {
-      this.$emit('onDetailClick', empNo)
+    onDetailClick(item) {
+      this.$emit('onDetailClick', item)
     }
   }
 }

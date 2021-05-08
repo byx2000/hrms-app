@@ -26,7 +26,7 @@
     </el-row>
     <salary-detail-dialog 
       :isOpen="isSalaryDetailDialogOpen" 
-      :empNo="currentEmpNo" 
+      :item="currentItem" 
       :salaries="currentEmployeeSalaryList"
       @onClose="isSalaryDetailDialogOpen = false"/>
   </div>
@@ -58,6 +58,7 @@ export default {
       },
       pageInfo: {},
       isSalaryDetailDialogOpen: false,
+      currentItem: {},
       currentEmpNo: '',
       currentEmployeeSalaryList: []
     }
@@ -86,10 +87,10 @@ export default {
       this.query.currentPage = 1
       this.refreshSalaryData(this.query)
     },
-    onDetailClick(empNo) {
-      getEmployeeSalaryList(empNo).then(res => {
+    onDetailClick(item) {
+      getEmployeeSalaryList(item.empId).then(res => {
         this.currentEmployeeSalaryList = res.data
-        this.currentEmpNo = empNo
+        this.currentItem = item
         this.isSalaryDetailDialogOpen = true
       })
     }

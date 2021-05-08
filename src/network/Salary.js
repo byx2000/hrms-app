@@ -14,10 +14,10 @@ export function getSalaryList(query) {
 }
 
 // 获取员工薪资列表
-export function getEmployeeSalaryList(empNo) {
+export function getEmployeeSalaryList(empId) {
   return request({
     url: '/salary/query',
     method: 'post',
-    data: { empNo }
+    data: { empId }
   })
 }
