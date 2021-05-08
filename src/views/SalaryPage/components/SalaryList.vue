@@ -12,7 +12,7 @@
     <el-table-column label="操作">
       <template slot-scope="scope">
         <el-button type="primary" size="mini" @click="onDetailClick(scope.row)">详情</el-button>
-        <el-button size="mini" type="warning">调整薪资</el-button>
+        <el-button size="mini" type="warning" @click="onAdjustClick(scope.row)">调整薪资</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -31,6 +31,9 @@ export default {
   methods: {
     onDetailClick(item) {
       this.$emit('onDetailClick', item)
+    },
+    onAdjustClick(item) {
+      this.$emit('onAdjustClick', item)
     }
   }
 }

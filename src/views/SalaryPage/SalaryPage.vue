@@ -16,7 +16,8 @@
     </el-row>
     <salary-list 
       :salaries="pageInfo.list"
-      @onDetailClick="onDetailClick"/>
+      @onDetailClick="onDetailClick"
+      @onAdjustClick="onAdjustClick"/>
     <el-row type="flex" justify="center">
       <page-switch 
         class="page-switch-bottom" 
@@ -29,19 +30,26 @@
       :item="currentItem" 
       :salaries="currentEmployeeSalaryList"
       @onClose="isSalaryDetailDialogOpen = false"/>
+    <salary-adjust-dialog
+      :isOpen="isSalaryAdjustDialogOpen"
+      :item="currentItem"
+      @onClose="isSalaryAdjustDialogOpen = false"
+      @onOk="onAdjustSalaryOk"/>
   </div>
 </template>
 
 <script>
-import { getSalaryList, getEmployeeSalaryList } from '../../network/Salary.js'
+import { getSalaryList, getEmployeeSalaryList, adjustSalary } from '../../network/Salary.js'
 import SalaryQueryOption from './components/SalaryQueryOption'
 import PageInfo from '../../components/PageInfo'
 import PageSwitch from '../../components/PageSwitch'
 import SalaryList from './components/SalaryList'
 import SalaryDetailDialog from './components/SalaryDetailDialog'
+import SalaryAdjustDialog from './components/SalaryAdjustDialog'
+import { CODE_SUCCESS } from '../../common/const.js'
 
 export default {
-  components: { SalaryQueryOption, PageInfo, PageSwitch, SalaryList, SalaryDetailDialog },
+  components: { SalaryQueryOption, PageInfo, PageSwitch, SalaryList, SalaryDetailDialog, SalaryAdjustDialog },
   data() {
     let now = new Date()
     let year = now.getFullYear().toString()
@@ -54,12 +62,14 @@ export default {
         empNo: '',
         empName: '',
         pageSize: 20,
-        currentPage: 1
+        currentPage: 1,
+        orderBy: 'empNo',
+        isDesc: false
       },
       pageInfo: {},
       isSalaryDetailDialogOpen: false,
+      isSalaryAdjustDialogOpen: false,
       currentItem: {},
-      currentEmpNo: '',
       currentEmployeeSalaryList: []
     }
   },
@@ -92,6 +102,24 @@ export default {
         this.currentEmployeeSalaryList = res.data
         this.currentItem = item
         this.isSalaryDetailDialogOpen = true
+      })
+    },
+    onAdjustClick(item) {
+      this.currentItem = item
+      this.isSalaryAdjustDialogOpen = true
+    },
+    onAdjustSalaryOk(salary) {
+      adjustSalary({
+        empId: this.currentItem.empId,
+        salary: salary
+      }).then(res => {
+        if (res.code === CODE_SUCCESS) {
+          this.$message.success('薪资调整成功！')
+        } else {
+          this.$message.error('薪资调整失败！')
+        }
+        this.isSalaryAdjustDialogOpen = false
+        this.refreshSalaryData(this.query)
       })
     }
   }

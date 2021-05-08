@@ -21,3 +21,12 @@ export function getEmployeeSalaryList(empId) {
     data: { empId }
   })
 }
+
+// 调整薪资
+export function adjustSalary(data) {
+  return request({
+    url: '/salary/insert',
+    method: 'post',
+    data: data
+  })
+}
