@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <div>
+  <div v-loading.fullscreen.lock="loading">
     <salary-query-option @onSearchClick="onSearchClick"/>
     <el-divider></el-divider>
     <el-row type="flex" justify="space-between" align="middle" class="page">
@@ -57,6 +57,7 @@ export default {
     let date = now.getDate().toString().padStart(2, '0')
 
     return {
+      loading: false,
       query: {
         time: year + "-" + month + "-" + date,
         empNo: '',
@@ -78,8 +79,10 @@ export default {
   },
   methods: {
     refreshSalaryData(query) {
+      this.loading = true
       getSalaryList(query).then(res => {
         this.pageInfo = res.data
+        this.loading = false
       })
     },
     onSearchClick(query) {

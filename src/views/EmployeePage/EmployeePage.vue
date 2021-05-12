@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <div>
+  <div v-loading.fullscreen.lock="loading">
     <employee-query-option @onSearchClick="onSearchClick"/>
     <el-divider></el-divider>
     <el-row type="flex" justify="space-between" align="middle" class="page">
@@ -63,6 +63,7 @@ export default {
   components: { EmployeeQueryOption, EmployeeList, PageInfo, PageSwitch, EmployeeDetailDialog, EmployeeEditDialog, EmployeeInsertDialog },
   data() {
     return {
+      loading: false,
       options: {
         pageSize: 20,
         currentPage: 1
@@ -79,8 +80,10 @@ export default {
   },
   methods: {
     refreshEmployeeData(options) {
+      this.loading = true
       queryEmployee(options).then(res => {
         this.pageInfo = res.data
+        this.loading = false
       })
     },
     onSearchClick(options) {
