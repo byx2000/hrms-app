@@ -11,14 +11,17 @@
     <el-table-column prop="time" label="时间" width="180"/>
     <el-table-column label="状态" width="180">
       <template slot-scope="scope">
-        <span :class="getStateClass(scope.row.type, scope.row.time)">
+        <!-- <span :class="getStateClass(scope.row.type, scope.row.time)">
           {{getState(scope.row.type, scope.row.time)}}
-        </span>
+        </span> -->
+        <el-tag v-if="getState(scope.row.type, scope.row.time) === 0" type="success">正常</el-tag>
+        <el-tag v-if="getState(scope.row.type, scope.row.time) === 1" type="danger">迟到</el-tag>
+        <el-tag v-if="getState(scope.row.type, scope.row.time) === 2" type="danger">早退</el-tag>
       </template>
     </el-table-column>
     <el-table-column label="操作">
       <template slot-scope="scope">
-        <el-button type="primary" size="mini" @click="onDetailClick(scope.row.empId)">详情</el-button>
+        <el-button type="primary" size="mini" @click="onDetailClick(scope.row)">详情</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -37,9 +40,9 @@ export default {
   methods: {
     getState(type, time) {
       if (type === 0) {
-        return time > '09:00' ? '迟到' : '正常出勤'
+        return time > '09:00' ? 1 : 0
       } else {
-        return time < '17:00' ? '早退' : '正常退勤'
+        return time < '17:00' ? 2 : 0
       }
     },
     getStateClass(type, time) {
@@ -49,8 +52,8 @@ export default {
         return time < '17:00' ? 'red' : 'green'
       }
     },
-    onDetailClick(empId) {
-      this.$emit('onDetailClick', empId)
+    onDetailClick(emp) {
+      this.$emit('onDetailClick', emp)
     }
   }
 }

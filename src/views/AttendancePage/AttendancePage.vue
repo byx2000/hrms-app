@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <div>
+  <div v-loading.fullscreen.lock="loading">
     <attendance-query-option @onSearchClick="onSearchClick"/>
     <el-divider></el-divider>
     <el-row type="flex" justify="space-between" align="middle" class="page">
@@ -38,6 +38,7 @@ export default {
   components: { AttendanceQueryOption, AttendanceList, PageInfo, PageSwitch },
   data() {
     return {
+      loading: false,
       query: {
         date: '2021-05-12',
         empNo: '',
@@ -54,8 +55,10 @@ export default {
   },
   methods: {
     refreshAttendanceData(query) {
+      this.loading = true
       getAttendanceList(query).then(res => {
         this.pageInfo = res.data
+        this.loading = false
       })
     },
     onSearchClick(query) {
@@ -73,8 +76,8 @@ export default {
       this.query.currentPage = 1
       this.refreshAttendanceData(this.query)
     },
-    onDetailClick(empId) {
-      console.log(empId)
+    onDetailClick(emp) {
+      console.log(emp)
     }
   }
 }
