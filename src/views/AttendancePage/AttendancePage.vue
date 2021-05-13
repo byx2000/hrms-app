@@ -24,18 +24,23 @@
         @onCurrentPageChange="onCurrentPageChange" 
         @onPageSizeChange="onPageSizeChange"/>
     </el-row>
+    <attendance-detail-dialog 
+      :isOpen="isAttendanceDetailOpen"
+      :item="currentItem"
+      @onClose="isAttendanceDetailOpen = false"/>
   </div>
 </template>
 
 <script>
-import { getAttendanceList } from '../../network/Attendance.js'
+import { getAttendanceList, getLatestWeekAttendance } from '../../network/Attendance.js'
 import AttendanceQueryOption from './components/AttendanceQueryOption'
 import AttendanceList from './components/AttendanceList'
 import PageInfo from '../../components/PageInfo'
 import PageSwitch from '../../components/PageSwitch'
+import AttendanceDetailDialog from './components/AttendanceDetailDialog'
 
 export default {
-  components: { AttendanceQueryOption, AttendanceList, PageInfo, PageSwitch },
+  components: { AttendanceQueryOption, AttendanceList, PageInfo, PageSwitch, AttendanceDetailDialog },
   data() {
     return {
       loading: false,
@@ -47,7 +52,9 @@ export default {
         pageSize: 20,
         currentPage: 1
       },
-      pageInfo: {}
+      pageInfo: {},
+      isAttendanceDetailOpen: false,
+      currentItem: {}
     }
   },
   created() {
@@ -76,8 +83,12 @@ export default {
       this.query.currentPage = 1
       this.refreshAttendanceData(this.query)
     },
-    onDetailClick(emp) {
-      console.log(emp)
+    onDetailClick(item) {
+      this.currentItem = item
+      getLatestWeekAttendance(item.empId).then(res => {
+        item.data = res.data
+        this.isAttendanceDetailOpen = true
+      })
     }
   }
 }

@@ -12,3 +12,12 @@ export function getAttendanceList(query) {
     data: query
   })
 }
+
+// 获取员工最近一周考勤时间
+export function getLatestWeekAttendance(empId) {
+  return request({
+    url: '/attendance/latest-week',
+    method: 'post',
+    data: { empId }
+  })
+}
