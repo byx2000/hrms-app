@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <el-dialog :title="title" :visible.sync="isOpen" width="40%" :before-close="beforeClose" @open="onOpen">
+  <el-dialog :title="title" :visible.sync="isOpen" width="40%" :before-close="beforeClose">
     <el-form label-width="80px" label-position="left" :rules="rules" :model="dept" ref="form">
 
       <el-row type="flex" justify="space-between">
