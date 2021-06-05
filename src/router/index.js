@@ -6,33 +6,49 @@ const DepartmentPage = () => import('../views/DepartmentPage/DepartmentPage.vue'
 const PositionPage = () => import('../views/PositionPage/PositionPage.vue')
 const SalaryPage = () => import('../views/SalaryPage/SalaryPage.vue')
 const AttendancePage = () => import('../views/AttendancePage/AttendancePage.vue')
+const LoginPage = () => import('../views/LoginPage/LoginPage.vue')
+const Hrms = () => import('../HrmsHome.vue')
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    redirect: '/employee'
+    redirect: '/hrms'
   },
   {
-    path: '/employee',
-    component: EmployeePage
+    path: '/login',
+    component: LoginPage
   },
   {
-    path: '/department',
-    component: DepartmentPage
-  },
-  {
-    path: '/position',
-    component: PositionPage
-  },
-  {
-    path: '/salary',
-    component: SalaryPage
-  },
-  {
-    path: '/attendance',
-    component: AttendancePage
+    path: '/hrms',
+    component: Hrms,
+    children: [
+      {
+        path: '/',
+        redirect: 'employee'
+      },
+      {
+        path: 'employee',
+        component: EmployeePage
+      },
+      {
+        path: 'department',
+        component: DepartmentPage
+      },
+      {
+        path: 'position',
+        component: PositionPage
+      },
+      {
+        path: 'salary',
+        component: SalaryPage
+      },
+      {
+        path: 'attendance',
+        component: AttendancePage
+      }
+    ]
   }
 ]
 
