@@ -20,16 +20,25 @@
 </template>
 
 <script>
+import { CODE_SUCCESS } from '../../common/const.js'
+import { login } from '../../network/User.js'
+
 export default {
   data() {
     return {
-      username: '',
-      password: ''
+      username: 'admin',
+      password: '123456'
     }
   },
   methods: {
     onLoginClick() {
-      console.log(this.username + ' ' + this.password)
+      login(this.username, this.password).then(res => {
+        if (res.code !== CODE_SUCCESS) {
+          this.$message.error('用户名或密码错误')
+        } else {
+          this.$router.push('/')
+        }
+      })
     }
   }
 }
