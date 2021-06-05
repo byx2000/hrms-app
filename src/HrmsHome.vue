@@ -24,14 +24,6 @@ export default {
 </script>
 
 <style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin-top: 0;
-}
-
 .title-bar-holder{
   width: 100%;
   position: fixed;
