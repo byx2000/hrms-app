@@ -4,9 +4,18 @@
 
 import request from './request'
 
+// 获取年龄报表
 export function getAgeReport() {
   return request({
     url: '/report/employee/age',
+    method: 'post'
+  })
+}
+
+// 获取性别报表
+export function getGenderReport() {
+  return request({
+    url: '/report/employee/gender',
     method: 'post'
   })
 }

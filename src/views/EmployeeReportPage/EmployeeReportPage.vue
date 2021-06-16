@@ -42,12 +42,15 @@ echarts.use(
     [ TitleComponent, TooltipComponent, GridComponent, BarChart, PieChart, CanvasRenderer, LegendComponent ]
 )
 
-import { getAgeReport } from '../../network/EmployeeReport.js'
+import { 
+  getAgeReport, getGenderReport 
+} from '../../network/EmployeeReport.js'
 
 export default {
   data() {
     return {
-      ageReportData: {}
+      ageReportData: {},
+      genderReportData: {}
     }
   },
   computed: {
@@ -69,9 +72,14 @@ export default {
       this.$nextTick(() => {
         this.drawAgeChartBar()
         this.drawAgeChartPie()
-        this.drawGenderChartPie()
-        this.drawTypeChartPie()
+        //this.drawGenderChartPie()
+        //this.drawTypeChartPie()
       })
+    })
+
+    getGenderReport().then(res => {
+      this.genderReportData = res.data
+      this.drawGenderChartPie()
     })
   },
   methods: {
@@ -173,8 +181,8 @@ export default {
             type: 'pie',
             radius: '80%',
             data: [
-              {value: 2000, name: '男'},
-              {value: 2500, name: '女'},
+              {value: this.genderReportData.maleCount, name: '男', itemStyle: {color: '#5080e2'}},
+              {value: this.genderReportData.femaleCount, name: '女', itemStyle: {color: '#f15151'}},
             ],
             emphasis: {
               itemStyle: {
@@ -182,6 +190,10 @@ export default {
                 shadowOffsetX: 0,
                 shadowColor: 'rgba(0, 0, 0, 0.5)'
               }
+            },
+            label : {
+              formatter: '{b}({d}%)',
+              position: 'inner'
             }
           }
         ]
