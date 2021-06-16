@@ -8,6 +8,11 @@ const SalaryPage = () => import('../views/SalaryPage/SalaryPage.vue')
 const AttendancePage = () => import('../views/AttendancePage/AttendancePage.vue')
 const LoginPage = () => import('../views/LoginPage/LoginPage.vue')
 const Hrms = () => import('../HrmsHome.vue')
+const EmployeeReportPage = () => import('../views/EmployeeReportPage/EmployeeReportPage.vue')
+const DepartmentReportPage = () => import('../views/DepartmentReportPage/DepartmentReportPage.vue')
+const PositionReportPage = () => import('../views/PositionReportPage/PositionReportPage.vue')
+const SalaryReportPage = () => import('../views/SalaryReportPage/SalaryReportPage.vue')
+const AttendanceReportPage = () => import('../views/AttendanceReportPage/AttendanceReportPage.vue')
 
 Vue.use(VueRouter)
 
@@ -47,6 +52,26 @@ const routes = [
       {
         path: 'attendance',
         component: AttendancePage
+      },
+      {
+        path: 'report/employee',
+        component: EmployeeReportPage
+      },
+      {
+        path: 'report/department',
+        component: DepartmentReportPage
+      },
+      {
+        path: 'report/position',
+        component: PositionReportPage
+      },
+      {
+        path: 'report/salary',
+        component: SalaryReportPage
+      },
+      {
+        path: 'report/attendance',
+        component: AttendanceReportPage
       }
     ]
   }

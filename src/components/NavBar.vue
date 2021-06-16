@@ -24,11 +24,26 @@
       <i class="fa fa-calendar" aria-hidden="true"></i>
       <span slot="title">考勤管理</span>
     </el-menu-item>
+    <el-submenu index>
+      <template slot="title">
+        <i class="fa fa-line-chart" aria-hidden="true"></i>
+        <span slot="title">报表中心</span>
+      </template>
+      <el-menu-item index="/hrms/report/employee"><span class="subitem">员工报表</span></el-menu-item>
+      <el-menu-item index="/hrms/report/department"><span class="subitem">部门报表</span></el-menu-item>
+      <el-menu-item index="/hrms/report/position"><span class="subitem">职位报表</span></el-menu-item>
+      <el-menu-item index="/hrms/report/salary"><span class="subitem">薪资报表</span></el-menu-item>
+      <el-menu-item index="/hrms/report/attendance"><span class="subitem">考勤报表</span></el-menu-item>
+    </el-submenu>
   </el-menu>
 </template>
 
 <style scoped>
 .fa {
   margin-right: 10px;
+}
+
+.subitem {
+  padding-left: 23px;
 }
 </style>

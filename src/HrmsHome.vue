@@ -33,7 +33,8 @@ export default {
 }
 
 .nav-bar {
-  width: 180px;
+  /*width: 180px;*/
+  width: 200px;
   height: 100vh;
   position: fixed;
   top: 69px;
@@ -41,6 +42,10 @@ export default {
 }
 
 .nav-bar .el-menu-item {
+  padding-left: 40px !important;
+}
+
+.nav-bar .el-submenu__title {
   padding-left: 40px !important;
 }
 
