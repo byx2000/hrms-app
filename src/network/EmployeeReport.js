@@ -19,3 +19,11 @@ export function getGenderReport() {
     method: 'post'
   })
 }
+
+// 获取类型报表
+export function getTypeReport() {
+  return request({
+    url: '/report/employee/type',
+    method: 'post'
+  })
+}

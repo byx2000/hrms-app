@@ -43,14 +43,15 @@ echarts.use(
 )
 
 import { 
-  getAgeReport, getGenderReport 
+  getAgeReport, getGenderReport, getTypeReport
 } from '../../network/EmployeeReport.js'
 
 export default {
   data() {
     return {
       ageReportData: {},
-      genderReportData: {}
+      genderReportData: {},
+      typeReportData: {}
     }
   },
   computed: {
@@ -72,14 +73,17 @@ export default {
       this.$nextTick(() => {
         this.drawAgeChartBar()
         this.drawAgeChartPie()
-        //this.drawGenderChartPie()
-        //this.drawTypeChartPie()
       })
     })
 
     getGenderReport().then(res => {
       this.genderReportData = res.data
       this.drawGenderChartPie()
+    })
+
+    getTypeReport().then(res => {
+      this.typeReportData = res.data
+      this.drawTypeChartPie()
     })
   },
   methods: {
@@ -221,8 +225,8 @@ export default {
             type: 'pie',
             radius: '80%',
             data: [
-              {value: 2900, name: '实习生'},
-              {value: 2500, name: '正式员工'},
+              {value: this.typeReportData.internCount, name: '实习生'},
+              {value: this.typeReportData.fullTimeCount, name: '正式员工'},
             ],
             emphasis: {
               itemStyle: {
@@ -230,6 +234,10 @@ export default {
                 shadowOffsetX: 0,
                 shadowColor: 'rgba(0, 0, 0, 0.5)'
               }
+            },
+            label : {
+              formatter: '{b}({c}人)',
+              position: 'inner'
             }
           }
         ]
