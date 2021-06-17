@@ -69,7 +69,6 @@ export default {
   created() {
     getAgeReport().then(res => {
       this.ageReportData = res.data
-
       this.$nextTick(() => {
         this.drawAgeChartBar()
         this.drawAgeChartPie()
