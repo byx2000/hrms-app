@@ -6,7 +6,7 @@ import axios from 'axios'
 
 export default function request(config) {
   const instance = axios.create({
-    baseURL: 'http://localhost:9999/hrms-api',
+    baseURL: 'http://localhost:9999',
     timeout: 10000,
     withCredentials: true
   })

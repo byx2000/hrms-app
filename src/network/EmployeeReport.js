@@ -12,14 +12,6 @@ export function getAgeReport() {
   })
 }
 
-// 获取性别报表
-export function getGenderReport() {
-  return request({
-    url: '/report/employee/gender',
-    method: 'post'
-  })
-}
-
 // 获取类型报表
 export function getTypeReport() {
   return request({

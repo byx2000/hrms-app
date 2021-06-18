@@ -2,7 +2,7 @@
   <div>
     <el-row>
       <el-col :span="12">
-        <!--员工年龄分布-->
+        <!--员工年龄人数统计-->
         <div id="age-chart-bar"></div>
       </el-col>
       <el-col :span="12">
@@ -43,7 +43,7 @@ echarts.use(
 )
 
 import { 
-  getAgeReport, getGenderReport, getTypeReport
+  getAgeReport, getTypeReport
 } from '../../network/EmployeeReport.js'
 
 export default {
@@ -55,28 +55,42 @@ export default {
     }
   },
   computed: {
-    pieAgeData() {
+    ageLabels() {
+      return this.ageReportData.map(e => e.label)
+    },
+    maleCountValues() {
+      return this.ageReportData.map(e => e.maleCount)
+    },
+    femaleCountValues() {
+      return this.ageReportData.map(e => e.femaleCount)
+    },
+    agePieData() {
       let data = []
-      for (let i = 0; i < this.ageReportData.labels.length; ++i) {
+      for (let item of this.ageReportData) {
         data.push({
-          name: this.ageReportData.labels[i],
-          value: this.ageReportData.values[i]
+          name: item.label,
+          value: item.maleCount + item.femaleCount
         })
       }
       return data
+    },
+    genderPieData() {
+      return [
+      {
+        name: '男',
+        value: this.ageReportData.map(e => e.maleCount).reduce((x,y) => x+y)
+      },
+      {
+        name: '女',
+        value: this.ageReportData.map(e => e.femaleCount).reduce((x,y) => x+y)
+      }]
     }
   },
   created() {
     getAgeReport().then(res => {
       this.ageReportData = res.data
-      this.$nextTick(() => {
-        this.drawAgeChartBar()
-        this.drawAgeChartPie()
-      })
-    })
-
-    getGenderReport().then(res => {
-      this.genderReportData = res.data
+      this.drawAgeChartBar()
+      this.drawAgeChartPie()
       this.drawGenderChartPie()
     })
 
@@ -93,36 +107,50 @@ export default {
       this.ageChartBar = echarts.init(document.getElementById('age-chart-bar'))
       this.ageChartBar.setOption({
         title: {
-          text: '员工年龄人数统计',
-          x: 'center'
+          text: '员工年龄人数统计'
         },
         tooltip: {
-          trigger: 'item'
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
         },
-        xAxis: {
-          name: '年龄',
-          type: 'category',
-          data: this.ageReportData.labels
+        legend: {
+          data: ['男', '女']
         },
         yAxis: {
-          name: '人数',
           type: 'value'
         },
-        series: [{
-          data: this.ageReportData.values,
-          type: 'bar',
-          label: {
-            show: true,
-            position: 'top'
+        xAxis: {
+          type: 'category',
+          data: this.ageLabels
+        },
+        series: [
+          {
+            name: '男',
+            type: 'bar',
+            stack: 'total',
+            label: {
+              show: true
+            },
+            emphasis: {
+              focus: 'series'
+            },
+            data: this.maleCountValues
           },
-          emphasis: {
-            itemStyle: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
+          {
+            name: '女',
+            type: 'bar',
+            stack: 'total',
+            label: {
+              show: true
+            },
+            emphasis: {
+              focus: 'series'
+            },
+            data: this.femaleCountValues
           }
-        }]
+        ]        
       })
     },
     drawAgeChartPie() {
@@ -136,18 +164,17 @@ export default {
           left: 'center'
         },
         tooltip: {
-          trigger: 'item',
-          formatter: '{b}:{c}: ({d}%)'
+          trigger: 'item'
         },
         legend: {
           orient: 'vertical',
-          left: 'left',
+          x: 'left'
         },
         series: [
           {
             type: 'pie',
-            radius: '80%',
-            data: this.pieAgeData,
+            radius: '70%',
+            data: this.agePieData,
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -156,7 +183,8 @@ export default {
               }
             },
             label : {
-              formatter: '{b}({d}%)'
+              formatter: '{d}%',
+              position: 'inner'
             }
           }
         ]
@@ -182,11 +210,8 @@ export default {
         series: [
           {
             type: 'pie',
-            radius: '80%',
-            data: [
-              {value: this.genderReportData.maleCount, name: '男', itemStyle: {color: '#5080e2'}},
-              {value: this.genderReportData.femaleCount, name: '女', itemStyle: {color: '#f15151'}},
-            ],
+            radius: '70%',
+            data: this.genderPieData,
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -222,7 +247,7 @@ export default {
         series: [
           {
             type: 'pie',
-            radius: '80%',
+            radius: '70%',
             data: [
               {value: this.typeReportData.internCount, name: '实习生'},
               {value: this.typeReportData.fullTimeCount, name: '正式员工'},
