@@ -75,7 +75,7 @@ export default {
       this.chart.setOption({
         title: {
           text: '职位人数统计',
-          subtext: '鼠标滚轮缩放',
+          subtext: '鼠标滚轮或点击缩放',
           left: 'center'
         },
         xAxis: {
@@ -86,14 +86,7 @@ export default {
           axisLine: {
             show: false
           },
-          z: 10,
-          axisLabel: {
-            inside: true,
-            color: '#fff',
-            formatter: function(value) {
-              return value.split('').join('\n').replace('-', ' ')
-            }
-          }
+          z: 10
         },
         yAxis: {
           axisLine: {
@@ -105,11 +98,21 @@ export default {
         },
         dataZoom: [
           {
-            type: 'inside'
+            type: 'slider',
+            show: true,
+            start: 0,
+            end: 40
+          },
+          {
+            type: 'inside',
+            realtime: true,
+            start: 0,
+            end: 40
           }
         ],
         tooltip: {
-          trigger: 'item'
+          trigger: 'item',
+          formatter: '{b0}: {c0}人'
         },
         series: [
           {
@@ -144,11 +147,15 @@ export default {
               color: '#fff'
             }
           }
-        ],
-        grid: {
-          x: 50,
-          x2: 30
-        }        
+        ]
+      })
+      let zoomSize = 6
+      this.chart.on('click', params => {
+        this.chart.dispatchAction({
+          type: 'dataZoom',
+          startValue: this.labels[Math.max(params.dataIndex - zoomSize / 2, 0)],
+          endValue: this.labels[Math.min(params.dataIndex + zoomSize / 2, this.values.length - 1)]
+        })
       })
     }
   }
