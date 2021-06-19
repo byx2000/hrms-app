@@ -11,3 +11,11 @@ export function getDepartmentEmployeeCountReport() {
     method: 'post'
   })
 }
+
+// 获取部门职位数报表
+export function getDepartmentPositionCountReport() {
+  return request({
+    url: '/report/department/position-count',
+    method: 'post'
+  })
+}

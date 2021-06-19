@@ -102,7 +102,7 @@ export default {
           },
           {
             type: 'inside',
-            realtime: true,
+            //realtime: true,
             start: 0,
             end: 25
           }
@@ -153,11 +153,6 @@ export default {
 </script>
 
 <style scoped>
-#attendance-calendar {
-  width: 100%;
-  height: 600px;
-}
-
 #attendance-pie {
   width: 100%;
   height: 600px;
